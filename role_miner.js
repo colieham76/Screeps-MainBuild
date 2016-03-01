@@ -195,7 +195,7 @@ var role_miner =
             let source = Game.getObjectById(creep.memory.source);
             if(source == undefined || source == null)
             {
-                console.log(creep.name + ": My source doesn't exist!");
+                creep.log("My source doesn't exist!");
                 this.onDeath();
                 creep.suicide();
             }

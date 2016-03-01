@@ -54,10 +54,10 @@ var SpawnController =
 
                     if(spawn.energy < 100)
                     {
-                        creepsWithLowHealth.forEach(function(creep)
+                        /*creepsWithLowHealth.forEach(function(creep)
                         {
                             creep.memory.renewing = undefined;
-                        });
+                        });*/
                         return;
                     }
 

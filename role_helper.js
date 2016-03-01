@@ -102,7 +102,7 @@ var role_helper =
         this.creep.memory.wait = 0;
         if(this.creep.memory.type == undefined)
         {
-            console.log("Helper spawned without a type!");
+            this.creep.log("Helper spawned without a type!");
             this.creep.suicide();
             this.onDeath();
         }

@@ -107,7 +107,7 @@ var role_carrier =
                 else
                     creep.memory.timesMoved++;
 
-                creep.gotoTarget(dropOff);
+                creep.gotoTarget2(dropOff);
             }
             else if(res == ERR_FULL && dropOff.memory != undefined && dropOff.memory.role == "controller" && dropOff.memory.nearController == true)
                 creep.drop(RESOURCE_ENERGY);
@@ -208,7 +208,7 @@ var role_carrier =
             {
                 let res = creep.pickup(target);
                 if(res == ERR_NOT_IN_RANGE)
-                    creep.gotoTarget(target.pos);
+                    creep.gotoTarget2(target.pos);
                 else if(res == ERR_INVALID_TARGET)
                     creep.memory.target = undefined;
             }
@@ -240,7 +240,7 @@ var role_carrier =
                     creep.memory.dropOff = undefined;
                     if(!creep.pos.inRangeTo(miner.pos, 2)) {
                         require("Stat").set("Carrier", "Going to miner");
-                        creep.gotoTarget(miner.pos);
+                        creep.gotoTarget2(miner.pos);
                         require("Stat").set("Carrier", "Went to miner");
                     }
                     else
@@ -254,7 +254,7 @@ var role_carrier =
                         {
                             let res = creep.pickup(resource[0]);
                             if(res == ERR_NOT_IN_RANGE)
-                                creep.gotoTarget(resource[0].pos);
+                                creep.gotoTarget2(resource[0].pos);
                         }
                         else
                             creep.memory.wait = 5;

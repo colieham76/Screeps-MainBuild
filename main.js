@@ -6,55 +6,15 @@ var RoomController = require('RoomController');
 var TowerController = require('TowerController');
 var MapController = require('MapController');
 var SpawnController = require('SpawnController');
+var AttackController = require('AttackController');
 require('extensions');
 
 if(Memory.sources == undefined)
     Memory.sources = {};
 
-var rLog = console.log;
 
 module.exports.loop = function ()
 {
-    rLog = console.log;
-    console.log = function(text)
-    {
-        let args = [];
-
-        for(let i = 0; i < arguments.length; i++)
-        {
-            switch(typeof(arguments[i]))
-            {
-                case "string":
-                case "number":
-                    args.push(arguments[i]);
-                    break;
-                case "array":
-                    args.push(JSON.stringify(arguments[i]));
-                    break;
-                case "object":
-                    let objArgs = [];
-                    let allNumeric = true;
-                    for(let k in arguments[i])
-                    {
-                        if(isNaN(k))
-                            allNumeric = false;
-                        objArgs.push(k + ": " + JSON.stringify(arguments[i][k]));
-                    }
-
-                    if(allNumeric)
-                        args.push(JSON.stringify(arguments[i]));
-                    else
-                        args.push("{ " + objArgs.join(", ") + " }");
-                    break;
-                default:
-                    args.push(JSON.stringify(arguments[i]));
-                    break;
-            }
-        }
-
-        rLog("" + args.join(" "));
-    };
-
     if(Memory.command != undefined)
     {
         let cmd = Memory.command;
@@ -111,7 +71,7 @@ module.exports.loop = function ()
             for(let k in Game.creeps)
             {
                 let creep = Game.creeps[k];
-                let role = roleManager.getRole(creep.memory.role);
+                let role = RoleManager.getRole(creep.memory.role);
                 if(role != null)
                 {
                     role = Object.create(role);
@@ -147,6 +107,7 @@ module.exports.loop = function ()
     RoleManager.work();
     //CarrierController.initController();
     TowerController.initController();
+    AttackController.initController();
 
     _.forEach(Game.rooms, function(room)
     {
@@ -169,5 +130,10 @@ module.exports.loop = function ()
     SpawnController.runController();
     SpawnController.afterController();
 
+    AttackController.beforeController();
+    AttackController.runController();
+    AttackController.afterController();
 
+    if(Game.cpu.getUsed() > Game.cpu.limit)
+        console.log("HIGH CPU: " + Game.cpu.getUsed());
 };

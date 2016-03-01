@@ -32,6 +32,9 @@ var Spawner =
         let room = this.room;
         this._initRoom();
 
+        if(room.controller == undefined || !room.controller.my)
+            return;
+
         if(room.memory.spawnQueue.length > 0 || room.memory.prioSpawnQueue.length > 0)
         {
 
@@ -97,7 +100,7 @@ var Spawner =
                         if(typeof(ret) == "string")
                         {
                             spawn.memory.spawning = room.memory.spawnQueue[0].role;
-                            console.log("Spawning " + ret + ", role: " + room.memory.spawnQueue[0].role);
+                            spawn.log("Spawning " + ret + ", role: " + room.memory.spawnQueue[0].role);
                             room.memory.spawnQueue.shift();
                         }
                     }

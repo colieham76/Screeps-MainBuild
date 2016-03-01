@@ -17,6 +17,9 @@ var RoomController =
         this.initController();
         let room = this.room;
 
+        if(room.controller == null || !room.controller.my)
+            return;
+
         if(room.memory.roomCheck <= 0)
         {
             room.memory.roomCheck = 500;

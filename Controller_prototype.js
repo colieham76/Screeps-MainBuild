@@ -43,7 +43,7 @@ var Controller_prototype =
         if(Memory.stats.controllers[this.getName()] == undefined)
             Memory.stats.controllers[this.getName()] = [];
 
-        Memory.stats.controllers[this.getName()].push(this.cpuAfter);
+        Memory.stats.controllers[this.getName()].push({time: Game.time, val: this.cpuAfter});
     },
 
     getName: function()

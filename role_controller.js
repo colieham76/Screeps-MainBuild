@@ -45,7 +45,7 @@ var role_controller =
 
                 refill = creep.pos.findInRange(FIND_DROPPED_RESOURCES, 5, {filter: function(res) { return res.resourceType == RESOURCE_ENERGY; }});
 
-                if(refill.length)
+                if(refill != undefined && refill.length)
                 {
                     refill = refill[0];
                     creep.memory.refill = refill.id;

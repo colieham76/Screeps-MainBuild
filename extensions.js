@@ -101,6 +101,68 @@ function findPathTo(origin, goals, opts)
 
 /**
  *
+ * @param {RoomPosition|Structure|Creep} origin
+ * @param {RoomPosition|Structure|Creep} goal
+ * @param {object} [opts]
+ * @returns {Object[]}
+ */
+function findPathTo2(origin, goal, opts)
+{
+
+    PathFinder.use(true);
+    if(opts == undefined)
+        opts = {};
+
+    if(origin.pos != undefined)
+        origin = origin.pos;
+
+    if(goal.pos != undefined)
+        goal = goal.pos;
+
+    if(opts.costCallback == undefined)
+    {
+        opts.costCallback = function(roomName, costMatrix)
+        {
+            var room = Game.rooms[roomName];
+            if(!room)
+                return;
+
+            room.find(FIND_STRUCTURES).forEach(
+                /** @param {Structure} structure **/
+                function(structure)
+                {
+                    if(structure.structureType == STRUCTURE_ROAD)
+                        costMatrix.set(structure.pos.x, structure.pos.y, 1);
+                    else if(structure.structureType !== STRUCTURE_RAMPART || !structure.my)
+                        costMatrix.set(structure.pos.x, structure.pos.y, 255);
+                }
+            );
+
+            room.find(FIND_CONSTRUCTION_SITES).forEach(
+                /** @param {ConstructionSite} site **/
+                function(site)
+                {
+                    if(site.structureType !== STRUCTURE_ROAD && site.structureType != STRUCTURE_RAMPART)
+                        costMatrix.set(site.pos.x, site.pos.y, 255);
+                }
+            );
+
+            room.find(FIND_CREEPS).forEach(
+
+                /** @param {Creep} creep **/
+                function(creep)
+                {
+                    costMatrix.set(creep.pos.x, creep.pos.y, 30); //Creeps usually moves around, so the position should still be possible
+                }
+            );
+        }
+    }
+
+    return origin.findPathTo(goal, opts);
+}
+
+/**
+ *
  * @param {[{type, filter}]} targets
  * @param {object} [opts]
  * @returns {object|null}
@@ -137,10 +199,100 @@ RoomPosition.prototype.findClosestByPathX = function(targets, opts)
 /**
  *
  * @param {RoomPosition|Structure|Creep} target
+ * @param {object} [opts]
+ */
+Creep.prototype.gotoTarget2 = function(target, opts)
+{
+    PathFinder.use(true);
+
+    let pos = target;
+    if(target.pos != undefined)
+        pos = target.pos;
+
+    var path = null;
+
+    if(this.memory.goto == undefined || this.memory.goto.goal.x == undefined || this.memory.goto.goal.y == undefined || this.memory.goto.goal.roomName == undefined)
+    {
+        path = findPathTo2(this.pos, pos, opts);
+
+        if(path.length)
+            this.memory.goto = {goal: {x: pos.x, y: pos.y, roomName: pos.roomName}, path: Room.serializePath(path), opts: opts};
+    }
+    else
+    {
+        if(pos.x != this.memory.goto.goal.x || pos.y != this.memory.goto.goal.y || pos.roomName != this.memory.goto.goal.roomName || this.memory.goto.path == undefined)
+        {
+            path = findPathTo2(this.pos, pos, opts);
+            if(path.length)
+                this.memory.goto = {goal: {x: pos.x, y: pos.y, roomName: pos.roomName}, path: Room.serializePath(path), opts: opts};
+        }
+        else
+        {
+            path = this.memory.goto.path;
+            if(path == null || path == undefined)
+            {
+                path = findPathTo2(this.pos, pos, opts);
+                if(path.length)
+                    this.memory.goto = {goal: {x: pos.x, y: pos.y, roomName: pos.roomName}, path: Room.serializePath(path), opts: opts};
+            }
+        }
+
+    }
+
+    PathFinder.use(false);
+
+    let goal = this.memory.goto.goal;
+
+    if(goal.x == this.pos.x && goal.y == this.pos.y && goal.roomName == this.pos.roomName)
+    {
+        this.memory.goto = undefined;
+        return "GOAL";
+    }
+
+    if(this.fatigue > 0)
+        return ERR_TIRED;
+
+    let moveRes = this.moveByPath(path);
+    if(moveRes == OK)
+    {
+        if(this.memory.goto.lastPos == undefined)
+            this.memory.goto.lastPos = {pos: {x: this.pos.x, y: this.pos.y, roomName: this.pos.roomName}, times: 0};
+        else if(this.pos.x == this.memory.goto.lastPos.pos.x && this.pos.y == this.memory.goto.lastPos.pos.y && this.pos.roomName == this.memory.goto.lastPos.pos.roomName)
+        {
+            this.memory.goto.lastPos.times++;
+
+            if(this.memory.goto.lastPos.times > 1)
+            {
+                this.memory.goto.path = undefined;
+            }
+
+            if(this.memory.goto.lastPos.times >= 20)
+            {
+                this.log("HELP, I'm stuck!");
+                Game.notify(this.name + " is stuck!");
+            }
+        }
+        else
+            this.memory.goto.lastPos = {pos: {x: this.pos.x, y: this.pos.y, roomName: this.pos.roomName}, times: 0};
+    }
+    else if(moveRes == ERR_NOT_FOUND || moveRes == ERR_NO_PATH)
+    {
+        this.log("No Path!");
+        this.memory.goto = undefined;
+    }
+
+    return moveRes;
+};
+
+/**
+ *
+ * @param {RoomPosition|Structure|Creep} target
  * @param {object} [opts] see Room.findPath
  */
 Creep.prototype.gotoTarget = function(target, opts)
 {
+    return this.gotoTarget2(target, opts);
+
     PathFinder.use(true);
     /** @type {object[]} **/
     var path = null;
@@ -158,8 +310,8 @@ Creep.prototype.gotoTarget = function(target, opts)
     if(target.pos != undefined)
         target = target.pos;
 
-    if(this.memory.goto != undefined && (this.memory.goto.x == undefined || this.memory.goto.y == undefined))
-        this.memory.goto = undefined;
+    /*if(this.memory.goto != undefined && (this.memory.goto.x == undefined || this.memory.goto.y == undefined))
+        this.memory.goto = undefined;*/
 
     if(this.memory.goto != undefined && this.memory.goto.goal != undefined)
     {
@@ -221,3 +373,81 @@ Creep.prototype.gotoTarget = function(target, opts)
 
     return moveRes;
 };
+
+Creep.prototype.log = function()
+{
+    Log(this, arguments);
+};
+
+Structure.prototype.log = function()
+{
+    Log(this, arguments);
+};
+
+Spawn.prototype.log = function()
+{
+    Log(this, arguments);
+};
+
+/**
+ *
+ * @param {Creep|Structure|Spawn|undefined|null} obj
+ * @param {object[]} args
+ */
+function Log(obj, args)
+{
+    let name = "Console";
+    if(obj != undefined && obj != null)
+    {
+        if(obj.name != undefined)
+            name = obj.name;
+        else if(obj.id != undefined)
+            name = obj.id;
+    }
+
+    if(name != "" && name != undefined && name != null)
+        name += ": ";
+
+    if(args.length == 1)
+        console.log(name + args[0]);
+    else
+    {
+        let xArgs = [];
+        for(let i in args)
+        {
+            let arg = args[i];
+            let val = _parseIntoString(arg);
+            xArgs.push(val);
+        }
+        console.log(name + xArgs.join(" "));
+    }
+}
+
+function _parseIntoString(val)
+{
+    //return JSON.stringify(val);
+     let line = [];
+    switch (typeof(val)) {
+        case "string":
+            return "\"" + val + "\"";
+            break;
+        case "number":
+            return val;
+            break;
+        case "array":
+            line = [];
+            for (let i = 0; i < val.length; i++)
+                line.push(_parseIntoString(val[i]));
+            return "[ " + line.join(", ") + " ]";
+            break;
+        case "object":
+            line = [];
+            for (let k in val)
+                line.push(k + ": " + _parseIntoString(val[k]));
+            return "{ " + line.join(", ") + " }";
+            break;
+        default:
+            return "" + val + "";
+            break;
+    }
+}

@@ -34,21 +34,23 @@ let role_prototype = {
         else if(creep.ticksToLive <= 1 && creep.memory != undefined)
         {
             this.onDeath();
+            creep.log("[" + creep.memory.role + "] Time to go, bye bye!");
             creep.memory = undefined;
             return;
         }
-        else if(creep.memory != undefined && ((creep.ticksToLive < this.renewAt && creep.ticksToLive > 2) || creep.memory.renewing == true))
+        else if(creep.memory != undefined && ((creep.ticksToLive < this.renewAt && creep.ticksToLive > 2) || creep.memory.renewing != undefined))
         {
             if(creep.memory.renewing == undefined)
             {
                 this.onRenew();
                 creep.say("RECHARGE");
+                creep.log("I need to recharge!");
             }
             if(this.renewCreep() != "DONE")
                 return;
         }
 
-        creep.memory.renewTarget = undefined;
+
         this.run();
     },
 
@@ -69,6 +71,7 @@ let role_prototype = {
         if(this.creep.ticksToLive >= this.renewTo)
         {
             this.creep.memory.renewing = undefined;
+            this.creep.memory.renewTarget = undefined;
             return "DONE";
         }
 
@@ -77,7 +80,7 @@ let role_prototype = {
         this.creep.memory.renewing = true;
         if(this.creep.memory.renewTarget == undefined)
         {
-            target = this.creep.pos.findClosestByPath(FIND_MY_SPAWNS, {filter: s => s.energy >= 100});
+            target = this.creep.pos.findClosestByPath(FIND_MY_SPAWNS);
             if(target != null && target != undefined)
                 this.creep.memory.renewTarget = target.id;
         }
@@ -93,6 +96,8 @@ let role_prototype = {
                 this.creep.gotoTarget(target.pos);
                 return ERR_NOT_IN_RANGE;
             }
+            else if(target.energy < 100)
+                return ERR_NOT_ENOUGH_RESOURCES;
             /*else if(target.spawning == null && target.energy >= 50)
                 return target.renewCreep(this.creep);*/
 

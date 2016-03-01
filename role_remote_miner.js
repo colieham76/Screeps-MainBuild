@@ -20,7 +20,7 @@ var role_remote_miner =
         }
 
         if(creep.room.name != creep.memory.dropPos.roomName)
-            creep.gotoTarget(new RoomPosition(creep.memory.dropPos.x, creep.memory.dropPos.y, creep.memory.dropPos.roomName));
+            creep.gotoTarget2(new RoomPosition(creep.memory.dropPos.x, creep.memory.dropPos.y, creep.memory.dropPos.roomName));
         else
         {
             if(creep.pos.x == 0)
@@ -81,7 +81,7 @@ var role_remote_miner =
                     let res = ERR_BUSY;
 
                     if(!creep.pos.isNearTo(target.pos))
-                        creep.gotoTarget(target.pos);
+                        creep.gotoTarget2(target.pos);
                     else
                     {
                         if(target.memory != undefined && target.memory.role == "controller")
@@ -93,7 +93,7 @@ var role_remote_miner =
                             if(res == ERR_FULL)
                                 creep.memory.target = undefined;
                             else if(res == ERR_NOT_IN_RANGE)
-                                creep.gotoTarget(target.pos);
+                                creep.gotoTarget2(target.pos);
                         }
                     }
 
@@ -121,7 +121,7 @@ var role_remote_miner =
         }
 
         if(creep.room.name != creep.memory.targetPos.roomName)
-            creep.gotoTarget(new RoomPosition(creep.memory.targetPos.x, creep.memory.targetPos.y, creep.memory.targetPos.roomName));
+            creep.gotoTarget2(new RoomPosition(creep.memory.targetPos.x, creep.memory.targetPos.y, creep.memory.targetPos.roomName));
         else
         {
             if(creep.pos.x == 0)
@@ -155,7 +155,7 @@ var role_remote_miner =
                     {
                         let res = creep.harvest(target);
                         if(res == ERR_NOT_IN_RANGE)
-                            creep.gotoTarget(target.pos);
+                            creep.gotoTarget2(target.pos);
                     }
                 }
             }
