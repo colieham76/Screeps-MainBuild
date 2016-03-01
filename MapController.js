@@ -1,5 +1,10 @@
 "use strict";
 
+/**
+ * @class
+ * @constructor
+ * @extends {Controller_prototype}
+ */
 var MapController =
 {
 
@@ -41,7 +46,16 @@ var MapController =
             }
         }
 
+    },
+
+    getName: function()
+    {
+        return "MapController";
     }
 };
 
-module.exports = MapController;
+let proto = require('Controller_prototype');
+let out = require("extend")(MapController, proto);
+out = Object.create(out);
+
+module.exports = out;

@@ -1,11 +1,12 @@
 "use strict";
 
-
+/**
+ * @class
+ * @constructor
+ * @extends {Controller_prototype}
+ */
 var TowerController =
 {
-    /** @type {Room} **/
-    room: null,
-
     /**
      *
      * @param {Structure_Tower} tower
@@ -36,6 +37,7 @@ var TowerController =
 
     runController: function()
     {
+        this.initController();
         let room = this.room;
 
         if(room.controller.level < 3)
@@ -53,28 +55,37 @@ var TowerController =
             return;
 
         let enemies = room.find(FIND_HOSTILE_CREEPS);
-        let damaged = room.find(FIND_MY_CREEPS, {filter: function(creep) { return creep.hits < creep.hitsMax; }});
-        let structures = room.find(FIND_STRUCTURES, {filter: function(struct) { return struct.hits < (struct.hitsMax / 2); }});
+        let damaged = [];
+        let structures = [];
 
-        structures.sort(function(a, b)
+        if(enemies.length == 0)
+            damaged = room.find(FIND_MY_CREEPS, {filter: function(creep) { return creep.hits < creep.hitsMax; }});
+
+        if(enemies.length == 0 && damaged.length == 0)
         {
-            if(a.structureType == b.structureType && a.structureType == STRUCTURE_ROAD)
-                return a.hits - b.hits;
+            structures = room.find(FIND_STRUCTURES, {filter: function(struct) { return struct.hits < (struct.hitsMax / 2); }});
 
-            let aX = a.hits / a.hitsMax;
-            let bX = b.hits / b.hitsMax;
-            if(a.structureType == b.structureType)
+            structures.sort(function(a, b)
             {
-                return aX - bX;
-            }
+                if(a.structureType == b.structureType && a.structureType == STRUCTURE_ROAD)
+                    return a.hits - b.hits;
 
-            if(a.structureType == STRUCTURE_ROAD)
-                return -1;
-            else if(b.structureType == STRUCTURE_ROAD)
-                return 1;
+                let aX = a.hits / a.hitsMax;
+                let bX = b.hits / b.hitsMax;
+                if(a.structureType == b.structureType)
+                {
+                    return aX - bX;
+                }
 
-            return bX - aX;
-        });
+                if(a.structureType == STRUCTURE_ROAD)
+                    return -1;
+                else if(b.structureType == STRUCTURE_ROAD)
+                    return 1;
+
+                return bX - aX;
+            });
+        }
+
 
         var ctrl = this;
         towers.forEach(
@@ -178,8 +189,17 @@ var TowerController =
                 }
             }
         );
+    },
+
+    getName: function()
+    {
+        return "TowerController";
     }
 
 };
 
-module.exports = TowerController;
+let proto = require('Controller_prototype');
+let out = require("extend")(TowerController, proto);
+out = Object.create(out);
+
+module.exports = out;

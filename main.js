@@ -11,8 +11,50 @@ require('extensions');
 if(Memory.sources == undefined)
     Memory.sources = {};
 
+var rLog = console.log;
+
 module.exports.loop = function ()
 {
+    rLog = console.log;
+    console.log = function(text)
+    {
+        let args = [];
+
+        for(let i = 0; i < arguments.length; i++)
+        {
+            switch(typeof(arguments[i]))
+            {
+                case "string":
+                case "number":
+                    args.push(arguments[i]);
+                    break;
+                case "array":
+                    args.push(JSON.stringify(arguments[i]));
+                    break;
+                case "object":
+                    let objArgs = [];
+                    let allNumeric = true;
+                    for(let k in arguments[i])
+                    {
+                        if(isNaN(k))
+                            allNumeric = false;
+                        objArgs.push(k + ": " + JSON.stringify(arguments[i][k]));
+                    }
+
+                    if(allNumeric)
+                        args.push(JSON.stringify(arguments[i]));
+                    else
+                        args.push("{ " + objArgs.join(", ") + " }");
+                    break;
+                default:
+                    args.push(JSON.stringify(arguments[i]));
+                    break;
+            }
+        }
+
+        rLog("" + args.join(" "));
+    };
+
     if(Memory.command != undefined)
     {
         let cmd = Memory.command;
@@ -29,22 +71,22 @@ module.exports.loop = function ()
         }
         else if(cmd == "cleanMemory")
         {
-            for(var k in Memory.creeps)
+            for(let k in Memory.creeps)
             {
                 if(Game.creeps[k] == undefined)
                     Memory.creeps[k] = undefined;
             }
-            for(var k in Memory.flags)
+            for(let k in Memory.flags)
             {
                 if(Game.flags[k] == undefined)
                     Memory.flags[k] = undefined;
             }
-            for(var k in Memory.rooms)
+            for(let k in Memory.rooms)
             {
                 if(Game.rooms[k] == undefined)
                     Memory.rooms[k] = undefined;
             }
-            for(var k in Memory.spawns)
+            for(let k in Memory.spawns)
             {
                 if(Game.spawns[k] == undefined)
                     Memory.spawns[k] = undefined;
@@ -66,7 +108,7 @@ module.exports.loop = function ()
         }
         else if(cmd == "who")
         {
-            for(var k in Game.creeps)
+            for(let k in Game.creeps)
             {
                 let creep = Game.creeps[k];
                 let role = roleManager.getRole(creep.memory.role);
@@ -97,7 +139,6 @@ module.exports.loop = function ()
                         if(Game.getObjectById(Memory.sources[source.id].miners[i]) == null)
                             Memory.sources[source.id].miners[i] = undefined;
                     }
-
                 });
             }
         }
@@ -111,30 +152,22 @@ module.exports.loop = function ()
     {
         Spawner.setRoom(room);
         Spawner.runRoom();
+        RoomController.beforeController();
         RoomController.setRoom(room);
-        RoomController.checkRoom();
+        RoomController.runController();
+        RoomController.afterController();
+        TowerController.beforeController();
         TowerController.setRoom(room);
         TowerController.runController();
+        TowerController.afterController();
     });
 
+    MapController.beforeController();
     MapController.runController();
+    MapController.afterController();
+    SpawnController.beforeController();
     SpawnController.runController();
-
-    /*if(Game.creeps["remMiner"] == undefined && Game.spawns["Spawn1"].spawning == null)
-    {
-        if(Game.spawns["Spawn1"].canCreateCreep([MOVE, MOVE, CARRY, WORK], "remMiner") == OK)
-            Game.spawns["Spawn1"].createCreep([MOVE, MOVE, CARRY, WORK], "remMiner", {role: "remote_miner", targetPos: {x: 42, y: 18, roomName: "W16N8"}, dropPos: {x: 8, y: 30, roomName: "W15N8"}});
-    }
-    else if(Game.creeps["remMiner2"] == undefined && Game.spawns["Spawn1"].spawning == null)
-    {
-        if(Game.spawns["Spawn1"].canCreateCreep([MOVE, MOVE, CARRY, WORK], "remMiner2") == OK)
-            Game.spawns["Spawn1"].createCreep([MOVE, MOVE, CARRY, WORK], "remMiner2", {role: "remote_miner", targetPos: {x: 42, y: 18, roomName: "W16N8"}, dropPos: {x: 8, y: 30, roomName: "W15N8"}});
-    }
-    else if(Game.creeps["remMiner3"] == undefined && Game.spawns["Spawn1"].spawning == null)
-    {
-        if(Game.spawns["Spawn1"].canCreateCreep([MOVE, MOVE, CARRY, WORK], "remMiner3") == OK)
-            Game.spawns["Spawn1"].createCreep([MOVE, MOVE, CARRY, WORK], "remMiner3", {role: "remote_miner", targetPos: {x: 42, y: 18, roomName: "W16N8"}, dropPos: {x: 8, y: 30, roomName: "W15N8"}});
-    }*/
+    SpawnController.afterController();
 
 
 };

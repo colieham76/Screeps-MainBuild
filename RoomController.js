@@ -2,31 +2,19 @@
 /**
  * @class
  * @constructor
+ * @extends {Controller_prototype}
  */
 var RoomController =
 {
-    /** @type {Room} **/
-    room: null,
-
-    /**
-     *
-     * @param {Room} room
-     */
-    setRoom: function(room)
-    {
-        this.room = room;
-    },
-
-
-    initRoom: function()
+    initController: function()
     {
         if(this.room.memory.roomCheck == undefined)
             this.room.memory.roomCheck = 0;
     },
 
-    checkRoom: function()
+    runController: function()
     {
-        this.initRoom();
+        this.initController();
         let room = this.room;
 
         if(room.memory.roomCheck <= 0)
@@ -148,7 +136,16 @@ var RoomController =
         }
         else
             room.memory.roomCheck--;
+    },
+
+    getName: function()
+    {
+        return "RoomController";
     }
 };
 
-module.exports = RoomController;
+let proto = require('Controller_prototype');
+let out = require("extend")(RoomController, proto);
+out = Object.create(out);
+
+module.exports = out;

@@ -55,7 +55,7 @@ let RoleManager =
                             if(Memory.stats.emailTimer == 0)
                             {
                                 Memory.stats.emailTimer = 500;
-                                let str = "";
+                                let str = "Roles:\n";
 
                                 for(let k in Memory.stats.ticks)
                                 {
@@ -84,7 +84,39 @@ let RoleManager =
                                     str += padding + k + "{ min: " + min.toFixed(2) + ", max: " + max.toFixed(2) + ", avg: " + avg.toFixed(2) + ", num: " + arr.length + " }\n";
                                 }
 
-                                Game.notify(str, 60);
+                                if(Memory.stats.controllers != undefined)
+                                {
+                                    str += "\n\nControllers:\n";
+
+                                    for(let k in Memory.stats.controllers)
+                                    {
+                                        let arr = Memory.stats.controllers[k];
+                                        let all = 0;
+                                        let min = 1000;
+                                        let max = 0;
+                                        for(let i = 1; i < arr.length; i++)
+                                        {
+                                            let j = arr[i] - arr[i - 1];
+                                            if (j < min)
+                                                min = j;
+                                            if(j > max)
+                                                max = j;
+                                            all += j;
+                                        }
+
+                                        let padding = "";
+                                        if(k.length < 18)
+                                        {
+                                            for(let j = 0; j < 18 - k.length; j++)
+                                                padding += " ";
+                                        }
+
+                                        let avg = all / arr.length;
+                                        str += padding + k + "{ min: " + min.toFixed(2) + ", max: " + max.toFixed(2) + ", avg: " + avg.toFixed(2) + ", num: " + arr.length + " }\n";
+                                    }
+                                }
+
+                                Game.notify(str, 400);
                                 Memory.stats.ticks = undefined;
                             }
                             else

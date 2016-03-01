@@ -1,6 +1,10 @@
 "use strict";
 
-
+/**
+ * @class
+ * @constructor
+ * @extends {Controller_prototype}
+ */
 var SpawnController =
 {
 
@@ -11,7 +15,7 @@ var SpawnController =
         {
             let spawn = Game.spawns[k];
 
-            if(spawn.spawning == null && spawn.energy >= 100)
+            if(spawn.spawning == null)
             {
                 let creeps = spawn.room.lookForAtArea("creep", spawn.pos.y - 1, spawn.pos.x - 1, spawn.pos.y + 1, spawn.pos.x + 1);
 
@@ -48,13 +52,29 @@ var SpawnController =
                         //return a.ticksToLive - b.ticksToLive;
                     });
 
+                    if(spawn.energy < 100)
+                    {
+                        creepsWithLowHealth.forEach(function(creep)
+                        {
+                            creep.memory.renewing = undefined;
+                        });
+                        return;
+                    }
+
                     spawn.renewCreep(creepsWithLowHealth[0]);
                 }
             }
         }
+    },
 
+    getName: function()
+    {
+        return "SpawnController";
     }
-
 };
 
-module.exports = SpawnController;
+let proto = require('Controller_prototype');
+let out = require("extend")(SpawnController, proto);
+out = Object.create(out);
+
+module.exports = out;

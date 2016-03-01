@@ -1,10 +1,12 @@
 "use strict";
 
+/**
+ * @class
+ * @constructor
+ * @extends {Controller_prototype}
+ */
 var CarrierController =
 {
-    /** @type {Room} **/
-    room: null,
-
     initController: function()
     {
         if(Memory.carrierController == undefined)
@@ -15,14 +17,6 @@ var CarrierController =
 
         if(Memory.carrierController.needEnergy == undefined)
             Memory.carrierController.needEnergy = [];
-    },
-
-    /**
-     * @param {Room} room
-     */
-    setRoom(room)
-    {
-        this.room = room;
     },
 
     runController: function()
@@ -169,7 +163,16 @@ var CarrierController =
         }
 
         return -1;
+    },
+
+    getName: function()
+    {
+        return "CarrierController";
     }
 };
 
-module.exports = CarrierController;
+let proto = require('Controller_prototype');
+let out = require("extend")(CarrierController, proto);
+out = Object.create(out);
+
+module.exports = out;
