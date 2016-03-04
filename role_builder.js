@@ -147,25 +147,37 @@ var role_builder =
             }
             else
             {
-                if((creep.room.energyAvailable < 250 && creep.carry.energy == 0) || creep.room.memory.prioSpawnQueue.length > 0)
-                {
-                    creep.memory.wait = 10;
-                    return;
-                }
 
                 creep.memory.target = undefined; //Reset the target, in case we want to build something with higher priority
 
                 let reload = undefined;
                 if(creep.memory.reloadTarget == undefined)
                 {
-                    reload = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-                        filter: function(struct)
+
+                    if(creep.room.storage != null && creep.room.storage != undefined && creep.room.storage.store.energy > 0)
+                        reload = creep.room.storage;
+
+                    if((creep.room.energyAvailable < 250 && creep.carry.energy == 0) || creep.room.memory.prioSpawnQueue.length > 0)
+                    {
+                        if(reload == null || reload == undefined)
                         {
-                            return (struct.structureType == STRUCTURE_EXTENSION && struct.energy > 0) ||
-                                (struct.structureType == STRUCTURE_LINK && struct.energy > 0) ||
-                                (struct.structureType == STRUCTURE_STORAGE && struct.store.energy > 0);
+                            console.log("waiting...");
+                            creep.memory.wait = 10;
+                            return;
                         }
-                    });
+                    }
+
+                    if(reload == null || reload == undefined)
+                    {
+                        reload = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                            filter: function(struct)
+                            {
+                                return (struct.structureType == STRUCTURE_EXTENSION && struct.energy > 0) ||
+                                    (struct.structureType == STRUCTURE_LINK && struct.energy > 0) ||
+                                    (struct.structureType == STRUCTURE_STORAGE && struct.store.energy > 0);
+                            }
+                        });
+                    }
 
                     if(reload == null || reload == undefined)
                     {

@@ -64,7 +64,12 @@ var RoleBodyDefinitions =
             "3": [MOVE, CARRY, WORK, WORK, WORK, WORK], //500
             "4": [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK], //600
             "5": [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, WORK], //700
-            "6": [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK]  //800
+            "6": [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK], //800
+            "7": [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK], //900
+            "8": [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK], //1000
+            "9": [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK], //1100
+            "10": [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK], //1200
+            "11": [MOVE, CARRY, MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK] //1300
         },
         "maintainer": {
             "0": [MOVE, CARRY, WORK], //200
@@ -74,6 +79,24 @@ var RoleBodyDefinitions =
             "4": [MOVE, MOVE, CARRY, CARRY, WORK, WORK, WORK, WORK], //600
             "5": [MOVE, MOVE, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK], //700
             "6": [MOVE, MOVE, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK, WORK]  //800
+        },
+        "attacker": {
+            "0": [TOUGH, TOUGH, MOVE, ATTACK, MOVE], //200
+            "1": [TOUGH, TOUGH, MOVE, MOVE, MOVE, ATTACK, MOVE], //300
+            "2": [TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, ATTACK, ATTACK, MOVE], //400
+            "3": [TOUGH, MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK, ATTACK, MOVE], //500
+            "4": [TOUGH, TOUGH, ATTACK, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, RANGED_ATTACK], //600
+            "5": [TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, RANGED_ATTACK], //700
+            "6": [TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, RANGED_ATTACK, RANGED_ATTACK] //800
+        },
+        "remote_miner": {
+            "0": [MOVE, CARRY, WORK], //200
+            "1": [MOVE, MOVE, CARRY, CARRY, WORK], //300
+            "2": [MOVE, MOVE, CARRY, CARRY, WORK, WORK], //400
+            "3": [MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK], //500
+            "4": [MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, WORK, WORK, WORK], //600
+            "5": [MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK], //700
+            "6": [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK]  //800
         }
     },
 
@@ -94,8 +117,11 @@ var RoleBodyDefinitions =
             if(hundred > energyLevel)
                 hundred -= 100;
             hundred /= 100; //4
+            hundred -= 2;
             if(this.bodies[role]["" + hundred + ""] != undefined)
+            {
                 return this.bodies[role]["" + hundred + ""];
+            }
         }
 
         if(this.bodies[role] !== undefined)

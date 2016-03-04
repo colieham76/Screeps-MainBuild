@@ -10,7 +10,7 @@ var role_attacker =
 
     /**
      *
-     * @returns {Creep|null}
+     * @returns {Creep|Structure|null}
      * @private
      */
     _getTarget: function()
@@ -104,12 +104,11 @@ var role_attacker =
 
     onSpawn: function()
     {
-        if(this.creep.memory.attack_id != undefined)
+        if(this.creep.memory.attack_id == undefined)
         {
-            let AttackController = require('AttackController');
-            let attack = AttackController.getAttack(this.creep.memory.attack_id);
-            attack.attackers.push(this.creep.id);
-            attack.waitingForAttacker = undefined;
+            this.creep.log("ERROR: I DONT HAVE A TARGET TO ATTACK");
+            this.onDeath();
+            this.creep.suicide();
         }
     },
 
@@ -119,34 +118,44 @@ var role_attacker =
 
         if(creep.memory != undefined)
         {
-            if(creep.memory.attack_id != undefined)
+            //Memory: role, attack_id, waitPoint, attack
+
+            let attack_flag = Game.getObjectById(creep.memory.attack_id);
+            let waitFlag = Game.getObjectById(creep.memory.wait_id);
+
+            if(creep.memory.attack == undefined)
             {
-                /** @type {AttackController} **/
-                let AttackController = require('AttackController');
-                let attack = AttackController.getAttack(creep.memory.attack_id);
-
-                if(attack == null || attack == undefined)
-                {
-                    creep.memory.attack_id = undefined;
-                    return;
-                }
-
-                if(creep.pos.roomName != attack.to.roomName)
-                    creep.moveTo(new RoomPosition(attack.to.x, attack.to.y, attack.to.roomName));
+                if(!creep.pos.inRangeTo(waitFlag.pos, 3))
+                    creep.gotoTarget2(waitFlag.pos);
+            }
+            else
+            {
+                if(creep.pos.roomName != attack_flag.pos.roomName)
+                    creep.gotoTarget2(attack_flag.pos);
                 else
                 {
-                    if(creep.pos.y == 0)
-                        creep.move(BOTTOM);
-                    else if(creep.pos.y == 49)
-                        creep.move(TOP);
-                    else if(creep.pos.x == 0)
+                    if(creep.pos.x == 0)
                         creep.move(RIGHT);
                     else if(creep.pos.x == 49)
                         creep.move(LEFT);
+                    else if(creep.pos.y == 0)
+                        creep.move(BOTTOM);
+                    else if(creep.pos.y == 49)
+                        creep.move(TOP);
 
+                    /** @type {Creep|Structure} **/
                     let target = this._getTarget();
 
-                    if(target != null && target != undefined)
+                    if(target == null)
+                    {
+                        creep.memory.attack = undefined;
+                        /** @type {AttackController} **/
+                        var AttackController = require('AttackController');
+                        AttackController.removeAttack(creep.memory.attack_id);
+                        return;
+                    }
+
+                    if(target.carryCapacity != undefined) //Target is a creep
                     {
                         if(creep.getActiveBodyparts(RANGED_ATTACK) > 0)
                         {
@@ -173,13 +182,32 @@ var role_attacker =
                             }
                         }
                     }
-                    else
+                    else if(target.structureType != undefined) //Target is a structure
                     {
-                        AttackController.removeAttack(creep.memory.attack_id);
-                        creep.memory.attack_id = undefined;
+                        if(creep.getActiveBodyparts(RANGED_ATTACK) > 0)
+                        {
+                            if(creep.pos.inRangeTo(target.pos, 3))
+                                creep.rangedAttack(target);
+                            else
+                            {
+                                let ret = creep.gotoTarget(target.pos)
+                                if(ret == ERR_NO_PATH || ret == ERR_INVALID_TARGET)
+                                    creep.memory.target = undefined;
+                            }
+                        }
+                        else if(creep.getActiveBodyparts(ATTACK) > 0)
+                        {
+                            if(creep.attack(target) == ERR_NOT_IN_RANGE)
+                            {
+                                let ret = creep.gotoTarget(target);
+                                if(ret == ERR_NO_PATH || ret == ERR_INVALID_TARGET)
+                                    creep.memory.target = undefined;
+                            }
+                        }
                     }
                 }
             }
+
         }
     },
 

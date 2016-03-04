@@ -33,8 +33,8 @@ let role_prototype = {
         }
         else if(creep.ticksToLive <= 1 && creep.memory != undefined)
         {
-            this.onDeath();
             creep.log("[" + creep.memory.role + "] Time to go, bye bye!");
+            this.onDeath();
             creep.memory = undefined;
             return;
         }
@@ -42,7 +42,11 @@ let role_prototype = {
         {
             if(creep.memory.renewing == undefined)
             {
-                this.onRenew();
+                if(this.onRenew() == "NO")
+                {
+                    this.run();
+                    return;
+                }
                 creep.say("RECHARGE");
                 creep.log("I need to recharge!");
             }
@@ -96,6 +100,8 @@ let role_prototype = {
                 this.creep.gotoTarget(target.pos);
                 return ERR_NOT_IN_RANGE;
             }
+            else if(target.energy < 100 && this.creep.carry.energy > 0)
+                this.creep.transfer(target, RESOURCE_ENERGY);
             else if(target.energy < 100)
                 return ERR_NOT_ENOUGH_RESOURCES;
             /*else if(target.spawning == null && target.energy >= 50)

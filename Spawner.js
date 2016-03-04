@@ -19,6 +19,9 @@ var Spawner =
     {
         let room = this.room;
 
+        if(room.controller == undefined || !room.controller.my)
+            return;
+
         if(room.memory.spawnQueue == undefined)
             room.memory.spawnQueue = [];
         if(room.memory.prioSpawnQueue == undefined)
@@ -38,25 +41,34 @@ var Spawner =
         if(room.memory.spawnQueue.length > 0 || room.memory.prioSpawnQueue.length > 0)
         {
 
-            if(room.energyAvailable == 300)
-            {
-                if(room.memory.timesSame == undefined)
-                    room.memory.timesSame = 0;
+            if(room.memory.timesSame == undefined || typeof(room.memory.timesSame != "object"))
+                room.memory.timesSame = {energy: room.energyAvailable, times: 1};
+            else if(room.memory.timesSame.energy == room.energyAvailable)
+                room.memory.timesSame.times++;
+            else if(room.memory.timesSame.energy != room.energyAvailable)
+                room.memory.timesSame = {energy: room.energyAvailable, times: 1};
 
-                if(room.memory.timesSame >= 100)
-                {
-                    let RoleBodyDefinitions = require("RoleBodyDefinitions");
-                    this.addToQueue("harvester", RoleBodyDefinitions.get("harvester", room.energyAvailable), true, true);
-                    room.memory.timesSame = 0;
-                }
-                else
-                    room.memory.timesSame++;
-            }
-            else
-                room.memory.timesSame = undefined;
 
             /** @type {Spawn[]} **/
             let spawns = room.find(FIND_MY_SPAWNS);
+
+            if(room.memory.timesSame.times >= 1000 && room.memory.timesSame.energy < 300)
+            {
+                room.memory.timesSame = 0;
+                for(let i = 0; i < spawns.length; i++)
+                {
+                    let spawn = spawns[i];
+                    if(spawn.spawning != null)
+                        continue;
+                    if(spawn.canCreateCreep([MOVE, CARRY, WORK]) == OK)
+                    {
+                        let ret = spawn.createCreep([MOVE, CARRY, WORK], undefined, {role: "harvester"});
+                        if(typeof(ret) == "string")
+                            break;
+                    }
+                }
+            }
+
 
             for(let i = 0; i < spawns.length; i++)
             {
@@ -122,6 +134,8 @@ var Spawner =
             let controllers = 0;
             let maintainers = 0;
             let carriers = 0;
+            let helpers = 0;
+            let storage_handlers = 0;
 
             let GPs = room.find(FIND_FLAGS, {
                 filter: function(flag)
@@ -143,7 +157,7 @@ var Spawner =
 
             let numDamagedCreeps = 0;
 
-            let needBuilders = Math.max(1, room.find(FIND_MY_CONSTRUCTION_SITES).length);
+            let needBuilders = Math.max(0, room.find(FIND_MY_CONSTRUCTION_SITES).length);
             if(needBuilders > 0)
             {
                 needBuilders = Math.ceil(needBuilders / 10);
@@ -205,6 +219,12 @@ var Spawner =
                     case "carrier":
                         carriers++;
                         break;
+                    case "helper":
+                        helpers++;
+                        break;
+                    case "storage_handler":
+                        storage_handlers++;
+                        break;
                 }
             }
 
@@ -238,6 +258,12 @@ var Spawner =
                     case "carrier":
                         carriers++;
                         break;
+                    case "helper":
+                        helpers++;
+                        break;
+                    case "storage_handler":
+                        storage_handlers++;
+                        break;
                 }
             }
             for(let i = 0; i < room.memory.spawnQueue.length; i++)
@@ -268,6 +294,12 @@ var Spawner =
                         break;
                     case "carrier":
                         carriers++;
+                        break;
+                    case "helper":
+                        helpers++;
+                        break;
+                    case "storage_handler":
+                        storage_handlers++;
                         break;
                 }
             }
@@ -302,6 +334,12 @@ var Spawner =
                             break;
                         case "carrier":
                             carriers++;
+                            break;
+                        case "helper":
+                            helpers++;
+                            break;
+                        case "storage_handler":
+                            storage_handlers++;
                             break;
                     }
                 }
@@ -345,6 +383,12 @@ var Spawner =
 
             if(carriers < neededMiners + 1)
                 this.addToQueue("carrier", RoleBodyDefinitions.get("carrier", room.energyCapacityAvailable), false, false);
+
+            if(helpers == 0)
+                this.addToQueue("helper", [MOVE, MOVE, CARRY, CARRY, MOVE, CARRY], true, false, {type: "controller"});
+
+            if(storage_handlers == 0)
+                this.addToQueue("storage_handler", [MOVE, CARRY], false, false);
 
         }
         else
@@ -411,6 +455,10 @@ var Spawner =
             prio = false;
 
         let room = this.room;
+
+        if(this.room == null || this.room == undefined)
+            this.room = Game.rooms["W15N8"];
+
         this._initRoom();
 
         if(memory == undefined)

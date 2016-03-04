@@ -8,11 +8,22 @@
 var role_carrier =
 {
 
+    /** @param {Creep} controller **/
+    _controllerHasEnergy: function(controller)
+    {
+        if(controller.carry.energy > 0)
+            return true;
+
+        return controller.pos.findInRange(FIND_DROPPED_RESOURCES, 3, {filter: r => { r.resourceType == RESOURCE_ENERGY; }}).length > 0;
+    },
+
     _dropOff: function()
     {
         let creep = this.creep;
 
         let dropOff = null;
+
+        let r = this;
         if(creep.memory.dropOff == undefined)
         {
             let enemies = creep.room.find(FIND_HOSTILE_CREEPS).length;
@@ -64,13 +75,18 @@ var role_carrier =
                 require("Stat").set("Carrier", "looking for controller");
                 dropOff = creep.room.find(FIND_MY_CREEPS, {
                     filter: function(c){
-                        return c.memory.role == "controller";
+                        return c.memory.role == "controller" && !r._controllerHasEnergy(c);
                     }
                 });
 
                 if(dropOff.length)
                     dropOff = dropOff[0];
                 require("Stat").set("Carrier", "controller search done");
+            }
+
+            if(dropOff == null || dropOff == undefined && creep.room.storage != null && creep.room.storage != undefined)
+            {
+                dropOff = creep.room.storage;
             }
 
             if(dropOff != null && dropOff != undefined)

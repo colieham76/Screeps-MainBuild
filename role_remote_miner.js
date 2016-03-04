@@ -8,9 +8,11 @@
 var role_remote_miner =
 {
     renewAt: 0,
+    renewTo: 1000,
 
     _drop: function()
     {
+        this.renewAt = 100;
         let creep = this.creep;
 
         if(creep.memory.wait > 0)
@@ -112,6 +114,7 @@ var role_remote_miner =
 
     _mine: function()
     {
+        this.renewAt = 0;
         let creep = this.creep;
 
         if(creep.memory.wait > 0)

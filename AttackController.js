@@ -42,82 +42,127 @@ var AttackController =
      */
     getAttack: function(id)
     {
-        for(let i = 0; i < Memory.attacks.length; i++)
-        {
-            if(Memory.attacks[i].id == id)
-                return Memory.attacks[i];
-        }
 
-        return null;
-    },
-
-    removeAttack: function(id)
-    {
-        let attacks = [];
-        for(let i = 0; i < Memory.attacks.length; i++)
-        {
-            if(Memory.attacks[i].id != id)
-                attacks.push(Memory.attacks[i]);
-        }
-        if(Memory.attacks.length < attacks.length)
-            console.log("Attack " + id + " has finished!");
-        Memory.attacks = attacks;
     },
 
     initController: function()
     {
-        if(Memory.attacks == undefined)
-            Memory.attacks = [];
+
+    },
+
+    removeAttack: function(id)
+    {
+        let flag = Game.getObjectById(id);
+        if(flag != null)
+        {
+            let waitFlag = Game.flags[flag.name + "_wait"];
+            if(waitFlag != null)
+            {
+                waitFlag.memory = undefined;
+                waitFlag.remove();
+            }
+
+            console.log(flag.name + ": ATTACK FINISHED");
+            flag.memory = undefined;
+            flag.remove();
+        }
     },
 
     runController: function()
     {
         this.initController();
 
-        if(Memory.attacks.length == 0)
-            return;
-
-        for(let i = 0; i < Memory.attacks.length; i++)
+        /** @type {Flag[]} **/
+        let attackFlags = [];
+        for(let k in Game.flags)
         {
-            /**
-             * @type {{id: number, from: RoomPosition, to: RoomPosition, attackers: [], neededAttackers: number}}
-             */
-            let attack = Memory.attacks[i];
+            if(Game.flags[k].memory.type == "attack" && Game.flags[k].memory.attackBegun == undefined)
+                attackFlags.push(Game.flags[k]);
+        }
 
-            if(attack.attackers == undefined)
-                attack.attackers = [];
+        let attacks = [];
 
-            if(attack.attackers.length < attack.neededAttackers && attack.waitingForAttacker == undefined)
+        for(let i = 0; i < attackFlags.length; i++)
+        {
+            let flag = attackFlags[i];
+            let wait = Game.flags[flag.name + "_wait"];
+
+            //flag Memory: { type: "attack", attackBegun: undefined }
+            //wait Memory: { type: "wait", spawning: undefined, needed: { attackers: 0 } }
+
+            if(wait != undefined && flag.memory.attackBegun == undefined && flag.memory.dontAttack == undefined)
             {
-                let attackers = this._getAttackers(attack.neededAttackers - attack.attackers.length);
-                for(let id in attackers.found)
+                let creeps = wait.pos.findInRange(FIND_MY_CREEPS, 5, {filter: c => { return c.memory.attack_id == flag.id; }});
+
+                let roles = {};
+                creeps.forEach(function(c)
                 {
-                    let creep = Game.getObjectById(attackers.found[id]);
-                    if(creep != null && creep.memory != undefined)
+                    if(roles[c.memory.role] == undefined)
+                        roles[c.memory.role] = [];
+
+                    roles[c.memory.role].push(c);
+                });
+
+                let allFound = true;
+                let creepsNeeded = [];
+
+                if(wait.memory.spawning == undefined && wait.memory.needed != undefined)
+                {
+                    for(let role in wait.memory.needed)
                     {
-                        creep.memory.attack_id = attack.id;
-                        attack.attackers.push(creep.id);
+                        if(roles[role] == undefined || roles[role].length < wait.memory.needed[role])
+                        {
+                            allFound = false;
+                            let count = 0;
+                            if(roles[role] != undefined)
+                                count = roles[role].length;
+                            for(let x = 0; x < wait.memory.needed[role] - count; x++)
+                                creepsNeeded.push(role);
+                        }
                     }
                 }
 
-                if(attackers.spawn > 0)
+                if(creeps.length > 0 && allFound)
                 {
-                    let room = Game.rooms[attack.from.roomName];
-
-                    if(room != null && room != undefined)
+                    console.log(flag.name + ": ATTACK!!");
+                    for(let role in roles)
                     {
-                        /** @type {Spawner} **/
-                        let Spawner = require('Spawner');
-                        for(let j = 0; j < attackers.spawn; j++)
-                        {
-                            Spawner.setRoom(room);
-                            Spawner.addToQueue("attacker", [MOVE, ATTACK], true, false, {role: "attacker", attack_id: attack.id});
-                        }
-                        attack.waitingForAttacker = true;
+                        roles[role].forEach(
+                            /** @param {Creep} c **/
+                            function(c)
+                            {
+                                c.memory.attack = true;
+                                c.log("Attacking!");
+                            }
+                        );
                     }
+                    flag.memory.attackBegun = true;
+                    wait.memory.spawning = undefined;
+                }
+                else
+                {
+                    /** @type {Spawner} **/
+                    let Spawner = require('Spawner');
+                    /** @type {RoleBodyDefinitions} **/
+                    let RBD = require('RoleBodyDefinitions');
+                    //todo: Create at the closest spawn
+                    Spawner.setRoom(Game.rooms["W15N8"]);
+
+                    for(let x in creepsNeeded)
+                    {
+                        let role = creepsNeeded[x];
+                        Spawner.addToQueue(role, RBD.getLevel(role, 0), true, false,
+                            {
+                                role: role, wait_id: wait.id, attack_id: flag.id
+                            }
+                        );
+                    }
+                    wait.memory.spawning = true;
                 }
             }
         }
+
+
     },
 
     getName: function()

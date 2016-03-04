@@ -25,14 +25,14 @@ var MapController =
         {
             Memory.mapCheckTimer = 500;
 
-            let creepNameCheck = ["remMiner", "remMiner2", "remMiner3"];
+            let creepNameCheck = ["remMiner", "remMiner2", "remMiner3", "remMiner4", "remMiner5"];
 
             for(let i in creepNameCheck)
             {
                 let k = creepNameCheck[i];
                 if(Game.creeps[k] == undefined && Game.spawns["Spawn1"].spawning == null)
                 {
-                    if(Game.spawns["Spawn1"].canCreateCreep([MOVE, MOVE, CARRY, WORK], k) == OK)
+                    if(Game.spawns["Spawn1"].canCreateCreep([MOVE, MOVE, CARRY, WORK], k) == OK && Game.spawns["Spawn1"].room.memory.prioSpawnQueue.length == 0)
                     {
                         let name = Game.spawns["Spawn1"].createCreep([MOVE, MOVE, CARRY, WORK], k, {role: "remote_miner", targetPos: {x: 42, y: 18, roomName: "W16N8"}, dropPos: {x: 8, y: 30, roomName: "W15N8"}});
                         if(typeof(name) == "string")

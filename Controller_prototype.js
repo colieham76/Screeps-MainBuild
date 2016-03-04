@@ -6,6 +6,7 @@
  */
 var Controller_prototype =
 {
+    /** @type {Room} **/
     room: null,
 
     cpuBefore: 0,
@@ -34,16 +35,8 @@ var Controller_prototype =
     {
         this.cpuAfter = Game.cpu.getUsed() - this.cpuBefore;
 
-        if(Memory.stats == undefined)
-            Memory.stats = {};
-
-        if(Memory.stats.controllers == undefined)
-            Memory.stats.controllers = {};
-
-        if(Memory.stats.controllers[this.getName()] == undefined)
-            Memory.stats.controllers[this.getName()] = [];
-
-        Memory.stats.controllers[this.getName()].push({time: Game.time, val: this.cpuAfter});
+        if(Memory.showCPU == true)
+            console.log(this.getName() + ": CPU Usage: " + this.cpuAfter);
     },
 
     getName: function()

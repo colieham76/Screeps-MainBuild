@@ -55,35 +55,31 @@ var role_helper =
             creep.memory.mode = "run";
             creep.memory.goto = undefined;
             creep.memory.target = undefined;
-            this._giveTower();
+            this._giveController();
         }
     },
 
-    _giveTower: function()
+    _giveController: function()
     {
         let creep = this.creep;
 
-        /** @type {Structure_Tower} **/
-        let tower = Game.getObjectById(creep.memory.help_id);
-        if(tower == null || tower == undefined)
+        /** @type {Creep} **/
+        let target = null;
+
+        if(creep.memory.help_id == undefined)
         {
-            console.log("Tower seems to have exploded...");
-            this.creep.suicide();
-            this.onDeath();
-            return;
+            target = creep.pos.findClosestByPath(FIND_MY_CREEPS, {filter: c => { return c.memory.role == "controller"; } });
+            if(target != null && target != undefined)
+                creep.memory.help_id = target.id;
         }
         else
-        {
-            if(tower.energyCapacity - tower.energy > creep.carry.energy)
-            {
-                if(!creep.pos.isNearTo(tower))
-                    creep.gotoTarget(tower.pos);
-                return;
-            }
+            target = Game.getObjectById(creep.memory.help_id);
 
-            let res = creep.transfer(tower, RESOURCE_ENERGY);
+        if(target != null && target != undefined)
+        {
+            let res = creep.transfer(target, RESOURCE_ENERGY);
             if(res == ERR_NOT_IN_RANGE)
-                creep.gotoTarget(tower.pos);
+                creep.gotoTarget(target.pos);
             else if(res == ERR_INVALID_TARGET)
                 creep.memory.help_id = undefined;
             else if(res == ERR_FULL)
@@ -100,22 +96,6 @@ var role_helper =
     onSpawn: function()
     {
         this.creep.memory.wait = 0;
-        if(this.creep.memory.type == undefined)
-        {
-            this.creep.log("Helper spawned without a type!");
-            this.creep.suicide();
-            this.onDeath();
-        }
-        else
-        {
-            switch(this.creep.memory.type)
-            {
-                case "tower":
-                    Memory.structures[this.creep.memory.help_id].helperComing = undefined;
-                    Memory.structures[this.creep.memory.help_id].helper = this.creep.id;
-                    break;
-            }
-        }
     },
 
     run: function()
@@ -128,8 +108,8 @@ var role_helper =
 
         if(this.creep.mode == undefined)
             this._getEnergy();
-        else if(this.creep.type == "tower")
-            this._giveTower();
+        else if(this.creep.type == "controller")
+            this._giveController();
     },
 
     onDeath: function()

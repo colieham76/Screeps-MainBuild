@@ -150,7 +150,15 @@ var role_miner =
             Memory.sources[source.id].miners.push(creep.id);
             creep.memory.source = source.id;
             creep.memory.carriers = [];
-            creep.memory.carriersNeeded = Math.max(1, Math.ceil(creep.pos.findPathTo(closestSpawn).length / 20));
+
+            let steps = creep.pos.findPathTo(closestSpawn).length;
+            let parts = 0;
+            let RoleBodyDefinitions = require('RoleBodyDefinitions');
+            let body = RoleBodyDefinitions.get("carrier", creep.room.energyCapacityAvailable);
+            body.forEach(function(part){ if(part == CARRY) parts++; });
+
+
+            creep.memory.carriersNeeded = Math.max( 1, Math.ceil( ( 10 * ( 2 * steps ) ) / ( 50 * parts ) ) );
             creep.memory.isNearSource = false;
         }
     },
@@ -263,6 +271,11 @@ var role_miner =
         }
 
         creep.memory = undefined;
+    },
+
+    onRenew: function()
+    {
+        this.creep.memory.isNearSource = false;
     }
 };
 

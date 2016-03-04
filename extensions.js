@@ -201,7 +201,7 @@ RoomPosition.prototype.findClosestByPathX = function(targets, opts)
  * @param {RoomPosition|Structure|Creep} target
  * @param {object} [opts]
  */
-Creep.prototype.gotoTarget2 = function(target, opts)
+Creep.prototype.gotoTarget = function(target, opts)
 {
     PathFinder.use(true);
 
@@ -252,7 +252,20 @@ Creep.prototype.gotoTarget2 = function(target, opts)
     if(this.fatigue > 0)
         return ERR_TIRED;
 
-    let moveRes = this.moveByPath(path);
+    let moveRes = ERR_TIRED;
+    /*if(this.memory.goto.lastPos != undefined && this.memory.goto.lastPos.roomName != this.pos.roomName)
+    {
+        if(this.pos.x == 0)
+            moveRes = this.move(RIGHT);
+        else if(this.pos.x == 49)
+            moveRes = this.move(LEFT);
+        else if(this.pos.y == 0)
+            moveRes = this.move(BOTTOM);
+        else if(this.pos.y == 49)
+            moveRes = this.move(TOP);
+    }*/
+
+    moveRes = this.moveByPath(path);
     if(moveRes == OK)
     {
         if(this.memory.goto.lastPos == undefined)
@@ -289,9 +302,10 @@ Creep.prototype.gotoTarget2 = function(target, opts)
  * @param {RoomPosition|Structure|Creep} target
  * @param {object} [opts] see Room.findPath
  */
-Creep.prototype.gotoTarget = function(target, opts)
+Creep.prototype.gotoTarget2 = function(target, opts)
 {
-    return this.gotoTarget2(target, opts);
+    this.log("Using old gotoTarget!");
+    return this.gotoTarget(target, opts);
 
     PathFinder.use(true);
     /** @type {object[]} **/

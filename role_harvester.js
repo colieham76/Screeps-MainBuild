@@ -1,7 +1,4 @@
 "use strict";
-
-let Path = require("Path");
-
 /**
  * @class
  * @constructor
