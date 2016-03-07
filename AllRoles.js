@@ -18,13 +18,18 @@ var role_attacker =
     {
         let creep = this.creep;
 
-        let enemies = creep.room.find(FIND_HOSTILE_CREEPS, {filter: c => { return c.getActiveBodyparts(ATTACK) > 0 || c.getActiveBodyparts(RANGED_ATTACK) > 0 }});
+        let enemies = Game.cacher.find(creep.room, FIND_HOSTILE_CREEPS, c => { return c.getActiveBodyparts(ATTACK) > 0 || c.getActiveBodyparts(RANGED_ATTACK) > 0 });
+
+        //let enemies = creep.room.find(FIND_HOSTILE_CREEPS, {filter: c => { return c.getActiveBodyparts(ATTACK) > 0 || c.getActiveBodyparts(RANGED_ATTACK) > 0 }});
 
         let target = null;
         if(creep.memory.target == undefined || enemies.length > 0)
         {
             target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: c => { return c.getActiveBodyparts(RANGED_ATTACK); }});
-            let closeTarget = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {filter: c => { return c.getActiveBodyparts(ATTACK); }});
+
+            let closeTarget = Game.cacher.findClosestByPath(creep.pos, FIND_HOSTILE_CREEPS, c => { return c.getActiveBodyparts(ATTACK); });
+
+            //let closeTarget = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {filter: c => { return c.getActiveBodyparts(ATTACK); }});
 
             if(target != null && closeTarget != null)
             {
@@ -38,16 +43,20 @@ var role_attacker =
                 target = closeTarget;
 
             if(target == null || target == undefined)
-                target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: s => { return s.structureType ==  STRUCTURE_TOWER; }});
+                //target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: s => { return s.structureType ==  STRUCTURE_TOWER; }});
+                target = Game.cacher.findClosestByPath(creep.pos, FIND_HOSTILE_STRUCTURES, s => { return s.structureType ==  STRUCTURE_TOWER; });
 
             if(target == null || target == undefined)
-                target = creep.pos.findClosestByPath(FIND_HOSTILE_SPAWNS);
+                //target = creep.pos.findClosestByPath(FIND_HOSTILE_SPAWNS);
+                target = Game.cacher.findClosestByPath(creep.pos, FIND_HOSTILE_SPAWNS);
 
             if(target == null || target == undefined)
-                target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: s => { return s.structureType != STRUCTURE_CONTROLLER; }});
+                //target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: s => { return s.structureType != STRUCTURE_CONTROLLER; }});
+                target = Game.cacher.findClosestByPath(creep.pos, FIND_HOSTILE_STRUCTURES, s => { return s.structureType != STRUCTURE_CONTROLLER; });
 
             if(target == null || target == undefined)
-                target = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
+                //target = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
+                target = Game.cacher.findClosestByPath(creep.pos, FIND_HOSTILE_CREEPS);
 
             if(target != null && target != undefined)
                 creep.memory.target = target.id;
@@ -261,20 +270,24 @@ var role_builder =
     _assignTarget: function()
     {
         var creep = this.creep;
-        var sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+
+        let sites = Game.cacher.find(creep.room, FIND_MY_CONSTRUCTION_SITES);
+
+        //var sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
 
         if(sites.length == 0)
         {
-            sites = creep.room.find(FIND_STRUCTURES, {
-                /**
-                 *
-                 * @param {Structure} struct
-                 */
+            sites = Game.cacher.find(creep.room, FIND_STRUCTURES, function(struct)
+            {
+                return struct.hits < struct.hitsMax && struct.isActive();
+            });
+
+            /*sites = creep.room.find(FIND_STRUCTURES, {
                 filter: function(struct)
                 {
                     return struct.hits < struct.hitsMax && struct.isActive();
                 }
-            });
+            });*/
 
             if(sites.length == 0)
                 creep.memory.wait = 20;
@@ -415,24 +428,36 @@ var role_builder =
 
                     if(reload == null || reload == undefined)
                     {
-                        reload = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                        reload = Game.cacher.findClosestByPath(creep.pos, FIND_MY_STRUCTURES, function(struct)
+                        {
+                            return (struct.structureType == STRUCTURE_EXTENSION && struct.energy > 0) ||
+                                (struct.structureType == STRUCTURE_LINK && struct.energy > 0) ||
+                                (struct.structureType == STRUCTURE_STORAGE && struct.store.energy > 0);
+                        });
+
+                        /*reload = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                             filter: function(struct)
                             {
                                 return (struct.structureType == STRUCTURE_EXTENSION && struct.energy > 0) ||
                                     (struct.structureType == STRUCTURE_LINK && struct.energy > 0) ||
                                     (struct.structureType == STRUCTURE_STORAGE && struct.store.energy > 0);
                             }
-                        });
+                        });*/
                     }
 
                     if(reload == null || reload == undefined)
                     {
-                        reload = creep.pos.findClosestByPath(FIND_MY_SPAWNS, {
+                        reload = Game.cacher.findClosestByPath(creep.pos, FIND_MY_SPAWNS, function(struct)
+                        {
+                            return (struct.structureType == STRUCTURE_SPAWN && struct.energy > 0);
+                        });
+
+                        /*reload = creep.pos.findClosestByPath(FIND_MY_SPAWNS, {
                             filter: function(struct)
                             {
                                 return (struct.structureType == STRUCTURE_SPAWN && struct.energy > 0);
                             }
-                        });
+                        });*/
                     }
 
                     if(reload != null && reload != undefined)
@@ -510,34 +535,54 @@ var role_carrier =
         let r = this;
         if(creep.memory.dropOff == undefined)
         {
-            let enemies = creep.room.find(FIND_HOSTILE_CREEPS).length;
+            let enemies = Game.cacher.find(creep.room, FIND_HOSTILE_CREEPS);
+            //let enemies = creep.room.find(FIND_HOSTILE_CREEPS).length;
 
             if(dropOff == null || dropOff == undefined)
             {
                 require("Stat").set("Carrier", "Looking for structures");
-                dropOff = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
 
-                    /** @param {Structure} struct **/
+                try
+                {
+                    /*let test = Game.cacher.findClosestByPath(creep.pos, FIND_MY_STRUCTURES, struct => { return (struct.structureType == STRUCTURE_EXTENSION && struct.energy < struct.energyCapacity) ||
+                        (struct.structureType == STRUCTURE_SPAWN && struct.energy < struct.energyCapacity); });
+                    console.log(test);*/
+
+                    dropOff = Game.cacher.findClosestByPath(creep.pos, FIND_MY_STRUCTURES, function(struct){
+                        return (struct.structureType == STRUCTURE_EXTENSION && struct.energy < struct.energyCapacity) ||
+                            (struct.structureType == STRUCTURE_SPAWN && struct.energy < struct.energyCapacity);
+                    });
+                }
+                catch(ex)
+                {
+                    console.error(ex.message);
+                    dropOff = undefined;
+                }
+
+                /*dropOff = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+
                     filter: function(struct)
                     {
                         return (struct.structureType == STRUCTURE_EXTENSION && struct.energy < struct.energyCapacity) ||
-                            (struct.structureType == STRUCTURE_SPAWN && struct.energy < struct.energyCapacity)
+                            (struct.structureType == STRUCTURE_SPAWN && struct.energy < struct.energyCapacity);
                     }
-                });
+                });*/
                 require("Stat").set("Carrier", "structures done");
             }
 
             if(dropOff == null || dropOff == undefined)
             {
                 require("Stat").set("Carrier", "Looking for structures");
-                dropOff = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
 
-                    /** @param {Structure_Tower} struct **/
+                dropOff = Game.cacher.findClosestByPath(creep.pos, FIND_MY_STRUCTURES, function(struct) { return struct.structureType == STRUCTURE_TOWER && struct.energy < struct.energyCapacity / 2 });
+
+                /*dropOff = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+
                     filter: function(struct)
                     {
                         return (struct.structureType == STRUCTURE_TOWER && struct.energy < struct.energyCapacity / 2);
                     }
-                });
+                });*/
                 require("Stat").set("Carrier", "structures done");
             }
 
@@ -561,6 +606,7 @@ var role_carrier =
             if(dropOff == null || dropOff == undefined)
             {
                 require("Stat").set("Carrier", "looking for controller");
+
                 dropOff = creep.room.find(FIND_MY_CREEPS, {
                     filter: function(c){
                         return c.memory.role == "controller" && !r._controllerHasEnergy(c);
@@ -850,6 +896,15 @@ var role_controller =
         }
         else
         {
+            /** @type {Structure_Link} **/
+            let link = creep.pos.findInRange(FIND_MY_STRUCTURES, 2, {filter: s => { return s.structureType == STRUCTURE_LINK && s.energy > 0; }});
+
+            if(link.length > 0)
+            {
+                if(link[0].transferEnergy(creep) == OK)
+                    return;
+            }
+
             let refill = null;
             if(creep.memory.refill == undefined)
             {
@@ -919,14 +974,20 @@ let role_guard =
     _assignGuardpost: function()
     {
         var creep = this.creep;
-        let flags = creep.room.find(FIND_FLAGS, {
 
-            /** @param {Flag} flag **/
+        let flags = Game.cacher.find(creep.room, FIND_FLAGS, function(flag)
+        {
+            return flag.memory.type == "guardpost";
+        });
+
+
+        /*let flags = creep.room.find(FIND_FLAGS, {
+
             filter: function(flag)
             {
                 return flag.memory.type == "guardpost";
             }
-        });
+        });*/
 
 
         flags = flags.sort(function(a, b){
@@ -1564,15 +1625,19 @@ var role_miner =
         if(creep == undefined)
             creep = this.creep;
 
-        /** @type {Source[]} **/
-        var sources = creep.room.find(FIND_SOURCES, {
+        let sources = Game.cacher.find(creep.room, FIND_SOURCES, function(source)
+        {
+            return Memory.sources[source.id] == undefined || Memory.sources[source.id].miners.length < Memory.sources[source.id].minersMax;
+        });
 
-            /** @param {Source} source **/
+        /** @type {Source[]} **/
+        /*var sources = creep.room.find(FIND_SOURCES, {
+
             filter: function(source)
             {
                 return Memory.sources[source.id] == undefined || Memory.sources[source.id].miners.length < Memory.sources[source.id].minersMax;
             }
-        });
+        });*/
 
         if(sources.length == 0)
             return null;
@@ -1654,13 +1719,17 @@ var role_miner =
      */
     _findIdleCarrier: function()
     {
-        return this.creep.room.find(FIND_MY_CREEPS, {
-            /** @param {Creep} creep **/
+        return Game.cacher.find(this.creep.room, FIND_MY_CREEPS, function(creep)
+        {
+            return !creep.spawning && creep.memory.role == "carrier" && (creep.memory.miner == undefined || Game.getObjectById(creep.memory.miner) == null);
+        });
+
+        /*return this.creep.room.find(FIND_MY_CREEPS, {
             filter: function(creep)
             {
                 return !creep.spawning && creep.memory.role == "carrier" && (creep.memory.miner == undefined || Game.getObjectById(creep.memory.miner) == null);
             }
-        });
+        });*/
     },
 
     _findAndSetCarrier()
@@ -1690,7 +1759,8 @@ var role_miner =
         var creep = this.creep;
 
         let source = this.FindSource();
-        let closestSpawn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+        //let closestSpawn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+        let closestSpawn = Game.cacher.findClosestByPath(creep.pos, FIND_MY_SPAWNS);
         if(source != null && source != undefined)
         {
             if(Memory.sources[source.id] == undefined)
@@ -1955,7 +2025,7 @@ var role_remote_miner =
                     {
                         creep.memory.goto = undefined;
                         creep.memory.target = undefined;
-                        creep.memory.mode = undefined
+                        creep.memory.mode = undefined;
                         creep.memory.wait = 0;
                     }
                 }
@@ -2078,15 +2148,19 @@ var role_helper =
 
             if(target == null || target == undefined || target.store.energy == 0)
             {
-                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                target = Game.cacher.findClosestByPath(creep.pos, FIND_MY_STRUCTURES, function(struct)
+                {
+                    return (struct.structureType == STRUCTURE_SPAWN && struct.energy > 0) ||
+                        (struct.structureType == STRUCTURE_EXTENSION && struct.energy > 0);
+                });
 
-                    /** @param {Structure|Spawn|Structure_Storage|Structure_Extension} struct **/
+                /*target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                     filter: function(struct)
                     {
                         return (struct.structureType == STRUCTURE_SPAWN && struct.energy > 0) ||
                             (struct.structureType == STRUCTURE_EXTENSION && struct.energy > 0);
                     }
-                });
+                });*/
             }
 
 
@@ -2133,7 +2207,9 @@ var role_helper =
 
         if(creep.memory.help_id == undefined)
         {
-            target = creep.pos.findClosestByPath(FIND_MY_CREEPS, {filter: c => { return c.memory.role == "controller"; } });
+            target = Game.cacher.findClosestByPath(creep.pos, FIND_MY_CREEPS, c => { return c.memory.role == "controller"; });
+
+            //target = creep.pos.findClosestByPath(FIND_MY_CREEPS, {filter: c => { return c.memory.role == "controller"; } });
             if(target != null && target != undefined)
                 creep.memory.help_id = target.id;
         }
@@ -2148,7 +2224,7 @@ var role_helper =
             else if(res == ERR_INVALID_TARGET)
                 creep.memory.help_id = undefined;
             else if(res == ERR_FULL)
-                creep.memory.wait = 10;
+                creep.memory.wait = 3;
         }
         else if(target == null || target == undefined)
             creep.memory.help_id = undefined;
@@ -2222,18 +2298,30 @@ var role_storage_handler =
             let target = null;
             if(creep.memory.target == undefined)
             {
-                target = creep.pos.findClosestByPath(FIND_MY_SPAWNS, { filter: s => { return s.energy < s.energyCapacity; } });
+                //target = creep.pos.findClosestByPath(FIND_MY_SPAWNS, { filter: s => { return s.energy < s.energyCapacity; } });
+
+                target = Game.cacher.findClosestByPath(creep.pos, FIND_MY_SPAWNS, s => { return s.energy < s.energyCapacity; });
 
                 if(target == null || target == undefined)
                 {
-                    target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                    /*target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
 
                         filter: function(struct)
                         {
                             return struct.structureType == STRUCTURE_EXTENSION && struct.energy < struct.energyCapacity;
                         }
+                    });*/
+
+                    target = Game.cacher.findClosestByPath(creep.pos, FIND_MY_STRUCTURES, function(struct)
+                    {
+                        return struct.structureType == STRUCTURE_EXTENSION && struct.energy < struct.energyCapacity;
                     });
                 }
+
+                /*if(target == null || target == undefined)
+                {
+                    target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, { filter: s => { return s.structureType == STRUCTURE_LINK && s.energy < s.energyCapacity && Memory.structures[s.id] != undefined && Memory.structures[s.id].type == "sender"; } });
+                }*/
 
                 if(target != null && target != undefined)
                     creep.memory.target = target.id;

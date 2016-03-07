@@ -300,9 +300,9 @@ var MapController =
             }
         }
 
-        if(Game.creeps["claimer"] == undefined && Game.spawns["Spawn1"].canCreateCreep([MOVE, CLAIM]) == OK)
+        if(Game.creeps["claimer"] == undefined && Game.spawns["Spawn1"].canCreateCreep([MOVE, CLAIM, CLAIM]) == OK)
         {
-            let name = Game.spawns["Spawn1"].createCreep([MOVE, CLAIM], "claimer", {role: "claimer"});
+            let name = Game.spawns["Spawn1"].createCreep([MOVE, CLAIM, CLAIM], "claimer", {role: "claimer"});
             if(typeof(name) == "string")
             {
                 console.log("Spawning " + name + ", role: claimer");
@@ -371,9 +371,31 @@ var RoomController =
             }
         }
 
-
         if(room.controller == undefined || !room.controller.my)
             return;
+
+        let links = room.find(FIND_MY_STRUCTURES, {filter: s => { return s.structureType == STRUCTURE_LINK }});
+
+        if(links.length > 0)
+        {
+            links.forEach(
+                /** @param {Structure_Link} link **/
+                function(link)
+                {
+                    if(Memory.structures[link.id] != undefined && Memory.structures[link.id].type == "sender")
+                    {
+                        if(link.energy >= link.energyCapacity / 2)
+                        {
+                            let target = Memory.structures[link.id].target;
+                            target = Game.getObjectById(target);
+
+                            if(target != null && target != undefined && target.energy < target.energyCapacity / 2);
+                                link.transferEnergy(target);
+                        }
+                    }
+                }
+            );
+        }
 
         if(room.memory.roomCheck <= 0)
         {
@@ -618,27 +640,35 @@ var TowerController =
         if(room.controller.level < 3)
             return;
 
-        let towers = room.find(FIND_MY_STRUCTURES,
+        /*let towers = room.find(FIND_MY_STRUCTURES,
             {
                 filter: function(struct)
                 {
                     return struct.structureType == STRUCTURE_TOWER;
                 }
-            });
+            });*/
+
+        let towers = Game.cacher.find(room, FIND_MY_STRUCTURES, function(struct) { return struct.structureType == STRUCTURE_TOWER; });
 
         if(towers.length == 0)
             return;
 
-        let enemies = room.find(FIND_HOSTILE_CREEPS);
+        //let enemies = room.find(FIND_HOSTILE_CREEPS);
+        let enemies = Game.cacher.find(room, FIND_HOSTILE_CREEPS);
         let damaged = [];
         let structures = [];
 
+        /*if(enemies.length == 0)
+            damaged = room.find(FIND_MY_CREEPS, {filter: function(creep) { return creep.hits < creep.hitsMax; }});*/
+
         if(enemies.length == 0)
-            damaged = room.find(FIND_MY_CREEPS, {filter: function(creep) { return creep.hits < creep.hitsMax; }});
+            damaged = Game.cacher.find(room, FIND_MY_CREEPS, function(creep) { return creep.hits < creep.hitsMax; });
 
         if(enemies.length == 0 && damaged.length == 0)
         {
-            structures = room.find(FIND_STRUCTURES, {filter: function(struct) { return struct.hits < struct.hitsMax - (struct.hitsMax / 4); }});
+            //structures = room.find(FIND_STRUCTURES, {filter: function(struct) { return struct.hits < struct.hitsMax - (struct.hitsMax / 4); }});
+
+            structures = Game.cacher.find(room, FIND_STRUCTURES, function(struct) { return struct.hits < struct.hitsMax - (struct.hitsMax / 4); });
 
             structures.sort(function(a, b)
             {

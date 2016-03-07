@@ -50,7 +50,9 @@ var Spawner =
 
 
             /** @type {Spawn[]} **/
-            let spawns = room.find(FIND_MY_SPAWNS);
+            //let spawns = room.find(FIND_MY_SPAWNS);
+
+            let spawns = Game.cacher.find(room, FIND_MY_SPAWNS);
 
             if(room.memory.timesSame.times >= 1000 && room.memory.timesSame.energy < 300)
             {
@@ -137,12 +139,19 @@ var Spawner =
             let helpers = 0;
             let storage_handlers = 0;
 
-            let GPs = room.find(FIND_FLAGS, {
+            let structures = {};
+
+            let GPs = Game.cacher.find(room, FIND_FLAGS, function(flag)
+            {
+                return flag.memory.type == "guardpost";
+            });
+
+            /*let GPs = room.find(FIND_FLAGS, {
                 filter: function(flag)
                 {
                     return flag.memory.type == "guardpost";
                 }
-            });
+            });*/
 
             let numGPS = 0;
 
@@ -153,11 +162,15 @@ var Spawner =
                     numGPS += 1;
             });
 
-            let numEnemies = room.find(FIND_HOSTILE_CREEPS).length;
+            let numEnemies = Game.cacher.find(room, FIND_HOSTILE_CREEPS).length;
+
+            //
+            // let numEnemies = room.find(FIND_HOSTILE_CREEPS).length;
 
             let numDamagedCreeps = 0;
 
-            let needBuilders = Math.max(0, room.find(FIND_MY_CONSTRUCTION_SITES).length);
+            //let needBuilders = Math.max(0, room.find(FIND_MY_CONSTRUCTION_SITES).length);
+            let needBuilders = Math.max(0, Game.cacher.find(room, FIND_MY_CONSTRUCTION_SITES).length);
             if(needBuilders > 0)
             {
                 needBuilders = Math.ceil(needBuilders / 10);
@@ -171,7 +184,9 @@ var Spawner =
 
             var miner_role = require('role_miner');
             let spwnr = this;
-            room.find(FIND_SOURCES).forEach(function(source)
+            //room.find(FIND_SOURCES)
+
+            Game.cacher.find(room, FIND_SOURCES).forEach(function(source)
             {
                 if(Memory.sources[source.id] != undefined)
                     neededMiners += Memory.sources[source.id].minersMax;
@@ -179,8 +194,23 @@ var Spawner =
                     neededMiners += miner_role.GetMineEntries(source).length;
             });
 
+            //room.find(FIND_MY_STRUCTURES)
 
-            var creeps = room.find(FIND_MY_CREEPS);
+            Game.cacher.find(room, FIND_MY_STRUCTURES).forEach(
+                /** @param {Structure} struct **/
+                function(struct)
+                {
+                    if(structures[struct.structureType] == undefined)
+                        structures[struct.structureType] = [];
+
+                    structures[struct.structureType].push(struct.id);
+                }
+            );
+
+
+            //var creeps = room.find(FIND_MY_CREEPS);
+
+            var creeps = Game.cacher.find(room, FIND_MY_CREEPS);
 
             for(let i = 0; i < creeps.length; i++)
             {
@@ -304,7 +334,9 @@ var Spawner =
                 }
             }
 
-            room.find(FIND_MY_SPAWNS, {filter: function(spawn) { return spawn.spawning && spawn.memory.spawning != undefined }}).forEach(
+            //room.find(FIND_MY_SPAWNS, {filter: function(spawn) { return spawn.spawning && spawn.memory.spawning != undefined }})
+
+            Game.cacher.find(room, FIND_MY_SPAWNS, function(spawn) { return spawn.spawning && spawn.memory.spawning != undefined }).forEach(
                 /** @param {Spawn} spawn **/
                 function(spawn)
                 {
@@ -384,7 +416,7 @@ var Spawner =
             if(carriers < neededMiners + 1)
                 this.addToQueue("carrier", RoleBodyDefinitions.get("carrier", room.energyCapacityAvailable), false, false);
 
-            if(helpers == 0)
+            if(helpers == 0 && (structures["link"] == undefined || structures["link"] < 2))
                 this.addToQueue("helper", [MOVE, MOVE, CARRY, CARRY, MOVE, CARRY], true, false, {type: "controller"});
 
             if(storage_handlers == 0)

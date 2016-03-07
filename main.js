@@ -1,6 +1,9 @@
 "use strict";
 let startTicks = Game.cpu.getUsed();
 let requireTicks = Game.cpu.getUsed();
+require('extensions');
+/** @type {Cacher} **/
+Game.cacher = require("Cacher");
 
 let roleTick = Game.cpu.getUsed();
 var RoleManager = require('RoleManager');
@@ -9,7 +12,6 @@ roleTick = Game.cpu.getUsed() - roleTick;
 let spawnTick = Game.cpu.getUsed();
 var Spawner = require('Spawner');
 spawnTick = Game.cpu.getUsed() - spawnTick;
-require('extensions');
 
 let allControllersTick = Game.cpu.getUsed();
 var AllControllers = require('AllControllers');
@@ -42,6 +44,10 @@ if(Memory.sources == undefined)
 module.exports.loop = function ()
 {
     let mainLoopTicks = Game.cpu.getUsed();
+
+    if(Game.cacher == undefined)
+        Game.cacher = require("Cacher");
+
     if(Memory.command != undefined)
     {
         let cmd = Memory.command;
@@ -177,6 +183,9 @@ module.exports.loop = function ()
 
     _.forEach(Game.rooms, function(room)
     {
+        if(Game.cacher == undefined)
+            Game.cacher = require("Cacher");
+
         let spawnerTick = Game.cpu.getUsed();
         Spawner.setRoom(room);
         Spawner.runRoom();

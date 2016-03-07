@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9e41e1a1-a858-465f-a595-26dc89620dde" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AllControllers.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AllRoles.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HelpFuncs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AttackController.js" afterPath="$PROJECT_DIR$/AttackController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CarrierController.js" afterPath="$PROJECT_DIR$/CarrierController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller_prototype.js" afterPath="$PROJECT_DIR$/Controller_prototype.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapController.js" afterPath="$PROJECT_DIR$/MapController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RoleBodyDefinitions.js" afterPath="$PROJECT_DIR$/RoleBodyDefinitions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RoleManager.js" afterPath="$PROJECT_DIR$/RoleManager.js" />
+    <list default="true" id="9e41e1a1-a858-465f-a595-26dc89620dde" name="Default" comment="A lot of changes!">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Cacher.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AllControllers.js" afterPath="$PROJECT_DIR$/AllControllers.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AllRoles.js" afterPath="$PROJECT_DIR$/AllRoles.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Spawner.js" afterPath="$PROJECT_DIR$/Spawner.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TowerController.js" afterPath="$PROJECT_DIR$/TowerController.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/extensions.js" afterPath="$PROJECT_DIR$/extensions.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.js" afterPath="$PROJECT_DIR$/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/role_attacker.js" afterPath="$PROJECT_DIR$/role_attacker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/role_builder.js" afterPath="$PROJECT_DIR$/role_builder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/role_carrier.js" afterPath="$PROJECT_DIR$/role_carrier.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/role_harvester.js" afterPath="$PROJECT_DIR$/role_harvester.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/role_helper.js" afterPath="$PROJECT_DIR$/role_helper.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/role_miner.js" afterPath="$PROJECT_DIR$/role_miner.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/role_prototype.js" afterPath="$PROJECT_DIR$/role_prototype.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/role_remote_miner.js" afterPath="$PROJECT_DIR$/role_remote_miner.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MainBuild.iws" />
@@ -49,38 +36,38 @@
       <file leaf-file-name="AllRoles.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AllRoles.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="31727" max-vertical-offset="40562">
-              <caret line="1889" column="52" selection-start-line="1889" selection-start-column="52" selection-end-line="1889" selection-end-column="52" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="37240" max-vertical-offset="42058">
+              <caret line="2218" column="47" selection-start-line="0" selection-start-column="0" selection-end-line="2468" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AllControllers.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AllControllers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AllControllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.73952436" vertical-offset="5603" max-vertical-offset="13753">
-              <caret line="368" column="39" selection-start-line="368" selection-start-column="39" selection-end-line="368" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="10941" max-vertical-offset="14263">
+              <caret line="663" column="11" selection-start-line="663" selection-start-column="11" selection-end-line="663" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RoleBodyDefinitions.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RoleBodyDefinitions.js">
+      <file leaf-file-name="MapController.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MapController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="969" max-vertical-offset="2975">
-              <caret line="59" column="23" selection-start-line="59" selection-start-column="23" selection-end-line="59" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1122">
+              <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="role_prototype.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/role_prototype.js">
+      <file leaf-file-name="TowerController.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TowerController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2040">
-              <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="957" max-vertical-offset="3689">
+              <caret line="106" column="45" selection-start-line="106" selection-start-column="45" selection-end-line="106" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -89,28 +76,18 @@
       <file leaf-file-name="extensions.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/extensions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4522" max-vertical-offset="8024">
-              <caret line="279" column="13" selection-start-line="279" selection-start-column="13" selection-end-line="279" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7990">
+              <caret line="3" column="2" selection-start-line="0" selection-start-column="0" selection-end-line="464" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HelpFuncs.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/HelpFuncs.js">
+      <file leaf-file-name="Cacher.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Cacher.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="1020">
-              <caret line="42" column="6" selection-start-line="0" selection-start-column="0" selection-end-line="54" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChainController.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WIP/ChainController.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2091" max-vertical-offset="3570">
-              <caret line="160" column="24" selection-start-line="160" selection-start-column="24" selection-end-line="160" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="1581">
+              <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -119,8 +96,8 @@
       <file leaf-file-name="RoleManager.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RoleManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="192" max-vertical-offset="2057">
-              <caret line="43" column="75" selection-start-line="43" selection-start-column="75" selection-end-line="43" selection-end-column="75" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="2057">
+              <caret line="51" column="25" selection-start-line="51" selection-start-column="25" selection-end-line="51" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -129,18 +106,18 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2550" max-vertical-offset="3808">
-              <caret line="179" column="21" selection-start-line="179" selection-start-column="21" selection-end-line="179" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2822" max-vertical-offset="3961">
+              <caret line="178" column="23" selection-start-line="178" selection-start-column="23" selection-end-line="178" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Spawner.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Spawner.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Spawner.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5474" max-vertical-offset="9095">
-              <caret line="334" column="36" selection-start-line="334" selection-start-column="36" selection-end-line="334" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.07589286" vertical-offset="8364" max-vertical-offset="9639">
+              <caret line="496" column="24" selection-start-line="496" selection-start-column="24" selection-end-line="496" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -170,7 +147,6 @@
         <option value="$PROJECT_DIR$/role_maintainer.js" />
         <option value="$PROJECT_DIR$/roleManager.js" />
         <option value="$PROJECT_DIR$/ControllerManager.js" />
-        <option value="$PROJECT_DIR$/TowerController.js" />
         <option value="$PROJECT_DIR$/role_controller.js" />
         <option value="$PROJECT_DIR$/role_guard.js" />
         <option value="$PROJECT_DIR$/SpawnController.js" />
@@ -183,21 +159,23 @@
         <option value="$PROJECT_DIR$/role_harvester.js" />
         <option value="$PROJECT_DIR$/role_remote_miner.js" />
         <option value="$PROJECT_DIR$/role_builder.js" />
-        <option value="$PROJECT_DIR$/RoleManager.js" />
         <option value="$PROJECT_DIR$/MapController.js" />
         <option value="$PROJECT_DIR$/AttackController.js" />
-        <option value="$PROJECT_DIR$/main.js" />
         <option value="$PROJECT_DIR$/role_helper.js" />
         <option value="$PROJECT_DIR$/role_miner.js" />
         <option value="$PROJECT_DIR$/WIP/role_chain.js" />
         <option value="$PROJECT_DIR$/WIP/ChainController.js" />
         <option value="$PROJECT_DIR$/HelpFuncs.js" />
         <option value="$PROJECT_DIR$/role_prototype.js" />
-        <option value="$PROJECT_DIR$/extensions.js" />
-        <option value="$PROJECT_DIR$/Spawner.js" />
         <option value="$PROJECT_DIR$/RoleBodyDefinitions.js" />
+        <option value="$PROJECT_DIR$/RoleManager.js" />
+        <option value="$PROJECT_DIR$/extensions.js" />
+        <option value="$PROJECT_DIR$/main.js" />
+        <option value="$PROJECT_DIR$/TowerController.js" />
         <option value="$PROJECT_DIR$/AllControllers.js" />
         <option value="$PROJECT_DIR$/AllRoles.js" />
+        <option value="$PROJECT_DIR$/Cacher.js" />
+        <option value="$PROJECT_DIR$/Spawner.js" />
       </list>
     </option>
   </component>
@@ -263,20 +241,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MainBuild" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MainBuild" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WIP" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -284,7 +248,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/GitHub/PortableGit_c7e0cbde92ba565cb218a521411d0e854079a28c/cmd/git.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="options.lastSelected" value="vcs.Git" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -355,7 +319,13 @@
       <option name="project" value="LOCAL" />
       <updated>1456826006759</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="A lot of changes!">
+      <created>1457074877481</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1457074877481</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -365,21 +335,21 @@
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="638" y="526" width="727" height="361" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22069694" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28921023" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15618336" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14818764" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28921023" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -402,31 +372,16 @@
       <TodoPanelSettings />
     </option>
     <MESSAGE value="Controllers!&#10;&#10;Prototyping of all the controllers.&#10;(Note: Spawner is not considered a controller in the case)." />
-    <option name="LAST_COMMIT_MESSAGE" value="Controllers!&#10;&#10;Prototyping of all the controllers.&#10;(Note: Spawner is not considered a controller in the case)." />
+    <MESSAGE value="A lot of changes!" />
+    <option name="LAST_COMMIT_MESSAGE" value="A lot of changes!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Controller_prototype.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="183" max-vertical-offset="1054">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RoomController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="2703">
-          <caret line="10" column="51" selection-start-line="10" selection-start-column="51" selection-end-line="10" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RoleManager.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2036" max-vertical-offset="3587">
@@ -543,6 +498,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334" vertical-offset="2042" max-vertical-offset="15946">
           <caret line="134" column="16" selection-start-line="134" selection-start-column="16" selection-end-line="134" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -569,14 +525,6 @@
           <folding>
             <element signature="e#15#77#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TowerController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3570">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="198" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -660,22 +608,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RoomController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2703">
-          <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MapController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1122">
-          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AttackController.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1224" max-vertical-offset="3128">
@@ -752,23 +684,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2244" max-vertical-offset="3570">
           <caret line="160" column="24" selection-start-line="160" selection-start-column="24" selection-end-line="160" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RoleManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="243" max-vertical-offset="2057">
-          <caret line="43" column="75" selection-start-line="43" selection-start-column="75" selection-end-line="43" selection-end-column="75" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/extensions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4522" max-vertical-offset="8024">
-          <caret line="279" column="13" selection-start-line="279" selection-start-column="13" selection-end-line="279" selection-end-column="13" />
-          <folding />
+          <folding>
+            <marker date="1456950097405" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -776,22 +694,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2040">
           <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spawner.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5474" max-vertical-offset="9095">
-          <caret line="334" column="36" selection-start-line="334" selection-start-column="36" selection-end-line="334" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2550" max-vertical-offset="3808">
-          <caret line="179" column="21" selection-start-line="179" selection-start-column="21" selection-end-line="179" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -804,18 +706,90 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AllRoles.js">
+    <entry file="file://$PROJECT_DIR$/RoomController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="31727" max-vertical-offset="40562">
-          <caret line="1889" column="52" selection-start-line="1889" selection-start-column="52" selection-end-line="1889" selection-end-column="52" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2703">
+          <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/extensions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7990">
+          <caret line="3" column="2" selection-start-line="0" selection-start-column="0" selection-end-line="464" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2822" max-vertical-offset="3961">
+          <caret line="178" column="23" selection-start-line="178" selection-start-column="23" selection-end-line="178" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RoleManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="2057">
+          <caret line="51" column="25" selection-start-line="51" selection-start-column="25" selection-end-line="51" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TowerController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="957" max-vertical-offset="3689">
+          <caret line="106" column="45" selection-start-line="106" selection-start-column="45" selection-end-line="106" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MapController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1122">
+          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AllControllers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.73952436" vertical-offset="5603" max-vertical-offset="13753">
-          <caret line="368" column="39" selection-start-line="368" selection-start-column="39" selection-end-line="368" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="10941" max-vertical-offset="14263">
+          <caret line="663" column="11" selection-start-line="663" selection-start-column="11" selection-end-line="663" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AllRoles.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="37240" max-vertical-offset="42058">
+          <caret line="2218" column="47" selection-start-line="0" selection-start-column="0" selection-end-line="2468" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cacher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="1581">
+          <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../GitHub/ScreepsAutocomplete/Constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.265625" vertical-offset="0" max-vertical-offset="8721">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spawner.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.07589286" vertical-offset="8364" max-vertical-offset="9639">
+          <caret line="496" column="24" selection-start-line="496" selection-start-column="24" selection-end-line="496" selection-end-column="24" />
           <folding />
         </state>
       </provider>

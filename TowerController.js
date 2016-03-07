@@ -43,27 +43,34 @@ var TowerController =
         if(room.controller.level < 3)
             return;
 
-        let towers = room.find(FIND_MY_STRUCTURES,
+        let towers = Game.cacher.find(room, FIND_MY_STRUCTURES, function(struct) { return struct.structureType == STRUCTURE_TOWER; });
+
+        /*let towers = room.find(FIND_MY_STRUCTURES,
             {
                 filter: function(struct)
                 {
                     return struct.structureType == STRUCTURE_TOWER;
                 }
-            });
+            });*/
 
         if(towers.length == 0)
             return;
 
-        let enemies = room.find(FIND_HOSTILE_CREEPS);
+        //let enemies = room.find(FIND_HOSTILE_CREEPS);
+        let enemies = Game.cacher.find(room, FIND_HOSTILE_CREEPS);
         let damaged = [];
         let structures = [];
 
+        /*if(enemies.length == 0)
+            damaged = room.find(FIND_MY_CREEPS, {filter: function(creep) { return creep.hits < creep.hitsMax; }});*/
+
         if(enemies.length == 0)
-            damaged = room.find(FIND_MY_CREEPS, {filter: function(creep) { return creep.hits < creep.hitsMax; }});
+            damaged = Game.cacher.find(room, FIND_MY_CREEPS, function(creep) { return creep.hits < creep.hitsMax; });
 
         if(enemies.length == 0 && damaged.length == 0)
         {
-            structures = room.find(FIND_STRUCTURES, {filter: function(struct) { return struct.hits < (struct.hitsMax / 2); }});
+            //structures = room.find(FIND_STRUCTURES, {filter: function(struct) { return struct.hits < (struct.hitsMax / 2); }});
+            structures = Game.cacher.find(room, FIND_STRUCTURES, function(struct) { return struct.hits < struct.hitsMax / 2; });
 
             structures.sort(function(a, b)
             {

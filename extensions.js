@@ -1,6 +1,5 @@
 "use strict";
 
-
 /**
  *
  * @param {RoomPosition} origin
@@ -290,7 +289,6 @@ Creep.prototype.gotoTarget = function(target, opts)
     }
     else if(moveRes == ERR_NOT_FOUND || moveRes == ERR_NO_PATH)
     {
-        this.log("No Path!");
         this.memory.goto = undefined;
     }
 
