@@ -1,3 +1,9 @@
+module.exports = {
+
+   
+ run: function(creep) {
+
+
 "use strict";
 
 /**
@@ -20,8 +26,12 @@ var role_attacker =
         let target = null;
         if(creep.memory.target == undefined)
         {
-            target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: c => { return c.getActiveBodyparts(RANGED_ATTACK); }});
-            let closeTarget = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {filter: c => { return c.getActiveBodyparts(ATTACK); }});
+            target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: c => { 
+                return c.getActiveBodyparts(RANGED_ATTACK); 
+            }});
+            let closeTarget = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {filter: c => {
+                return c.getActiveBodyparts(ATTACK);
+            }});
 
             if(target != null && closeTarget != null)
             {
@@ -34,11 +44,8 @@ var role_attacker =
             if(target == null && closeTarget != null)
                 target = closeTarget;
 
-            if(target == null || target == undefined)
-                target = creep.pos.findClosestByPath(FIND_HOSTILE_SPAWNS);
-
-            if(target == null || target == undefined)
-                target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: s => { return s.structureType != STRUCTURE_CONTROLLER; }});
+            
+           
 
             if(target == null || target == undefined)
                 target = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
